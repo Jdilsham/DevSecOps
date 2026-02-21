@@ -1,0 +1,5 @@
+[[rules]]
+id = "db-password"
+description = "Detect DB_PASSWORD assignments"
+regex = '''(?i)DB_PASSWORD\s*=\s*.+'''
+tags = ["password"]
