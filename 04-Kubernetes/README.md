@@ -555,6 +555,7 @@ Git stays clean. Secrets stay safe.
 ```
 helm repo add external-secrets https://charts.external-secrets.io
 helm repo update
+helm instakll external-secrets external-secrets/external-secrets -n external-secret --create-namespace
 ```
 
 Verify:
@@ -608,28 +609,7 @@ kubectl port-forward -n vault deploy/vault 8200:8200
 
 ---
 
-## Store a Secret in Vault
 
-In another terminal:
-
-```
-kubectl exec -it -n vault deploy/vault -- sh
-
-export VAULT_ADDR=http://127.0.0.1:8200
-export VAULT_TOKEN=root
-
-vault kv put secret/payments/db username=admin password=SuperSecret123
-```
-
-Create Vault Token Secret
-
-```
-kubectl create secret generic vault-token \
-  --from-literal=token=root \
-  -n payments
-```
-
----
 
 ## Create a SecretStore (Vault Connection)
 
@@ -651,6 +631,29 @@ spec:
           name: vault-token
           key: token
 EOF
+```
+
+---
+
+## Store a Secret in Vault
+
+In another terminal:
+
+```
+kubectl exec -it -n vault deploy/vault -- sh
+
+export VAULT_ADDR=http://127.0.0.1:8200
+export VAULT_TOKEN=root
+
+vault kv put secret/payments/db username=admin password=SuperSecret123
+```
+
+Create Vault Token Secret
+
+```
+kubectl create secret generic vault-token \
+  --from-literal=token=root \
+  -n payments
 ```
 
 ---
